@@ -49,6 +49,40 @@ class Game:
 
         return count
 
+    def show_content(self, i, j):
+        self.playingField[i][j].isOpen = True
+        if self.playingField[i][j] == 'Bomb': return
+        else:
+            self.easy_cells(i, j)
+
+    def check_cell(self, i, j):
+        if self.playingField[i][j].value != 'Bomb':
+            if not self.playingField[i][j].isOpen:
+                self.playingField[i][j].isOpen = True
+                if self.playingField[i][j].countOfBombsNear == 0:
+                    self.easy_cells(i, j)
+
+
+    def easy_cells(self, i, j):
+        # if i > 0 and j > 0:
+        #     self.check_cell(i - 1, j - 1)
+        if i > 0:
+            self.check_cell(i - 1, j)
+        # if i > 0 and j < self.size - 1:
+        #     self.check_cell(i - 1, j + 1)
+
+        if j > 0:
+            self.check_cell(i, j - 1)
+        if j < self.size - 1:
+            self.check_cell(i, j + 1)
+
+        # if i < self.size - 1 and j > 0:
+        #     self.check_cell(i + 1, j - 1)
+        if i < self.size - 1:
+            self.check_cell(i + 1, j)
+        # if i < self.size - 1 and j < self.size - 1:
+        #     self.check_cell(i + 1, j + 1)
+
 
 class GameCell:
     def __init__(self):
