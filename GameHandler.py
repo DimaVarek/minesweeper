@@ -1,6 +1,22 @@
 import random
 
 
+class GameCell:
+    def __init__(self):
+        self.value = 'Empty'
+        self.countOfBombsNear = 0
+        self.isOpen = False
+
+    def is_it_bomb(self):
+        if self.value == 'Empty':
+            return False
+        else:
+            return True
+
+    def __str__(self):
+        return f'value: {self.value}, count: {self.countOfBombsNear}'
+
+
 class Game:
     def __init__(self, size, bombs_count):
         self.size = size
@@ -24,7 +40,6 @@ class Game:
             for j in range(self.size):
                 if self.playingField[i][j].value != 'Bomb':
                     self.playingField[i][j].countOfBombsNear = self.how_many_bombs_are_there(i, j)
-
 
     def how_many_bombs_are_there(self, i, j):
         count = 0
@@ -51,9 +66,12 @@ class Game:
 
     def show_content(self, i, j):
         self.playingField[i][j].isOpen = True
-        if self.playingField[i][j] == 'Bomb': return
+        if self.playingField[i][j].value == 'Bomb':
+            print('We are stop because it is bomb')
+            return
         else:
-            self.easy_cells(i, j)
+            if self.playingField[i][j].countOfBombsNear == 0:
+                self.easy_cells(i, j)
 
     def check_cell(self, i, j):
         if self.playingField[i][j].value != 'Bomb':
@@ -62,40 +80,23 @@ class Game:
                 if self.playingField[i][j].countOfBombsNear == 0:
                     self.easy_cells(i, j)
 
-
     def easy_cells(self, i, j):
-        # if i > 0 and j > 0:
-        #     self.check_cell(i - 1, j - 1)
+        if i > 0 and j > 0:
+            self.check_cell(i - 1, j - 1)
         if i > 0:
             self.check_cell(i - 1, j)
-        # if i > 0 and j < self.size - 1:
-        #     self.check_cell(i - 1, j + 1)
+        if i > 0 and j < self.size - 1:
+            self.check_cell(i - 1, j + 1)
 
         if j > 0:
             self.check_cell(i, j - 1)
         if j < self.size - 1:
             self.check_cell(i, j + 1)
 
-        # if i < self.size - 1 and j > 0:
-        #     self.check_cell(i + 1, j - 1)
+        if i < self.size - 1 and j > 0:
+            self.check_cell(i + 1, j - 1)
         if i < self.size - 1:
             self.check_cell(i + 1, j)
-        # if i < self.size - 1 and j < self.size - 1:
-        #     self.check_cell(i + 1, j + 1)
+        if i < self.size - 1 and j < self.size - 1:
+            self.check_cell(i + 1, j + 1)
 
-
-class GameCell:
-    def __init__(self):
-        self.value = 'Empty'
-        self.countOfBombsNear = 0
-        self.isOpen = False
-
-    def is_it_bomb(self):
-        if self.value == 'Empty':
-            return False
-        else:
-            return True
-
-
-    def __str__(self):
-        return f'value: {self.value}, count: {self.countOfBombsNear}'
