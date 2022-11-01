@@ -64,7 +64,7 @@ class Game:
 
         return count
 
-    def show_content(self, i, j):
+    def open_cell(self, i, j):
         self.playingField[i][j].isOpen = True
         if self.playingField[i][j].value == 'Bomb':
             print('We are stop because it is bomb')
@@ -99,4 +99,19 @@ class Game:
             self.check_cell(i + 1, j)
         if i < self.size - 1 and j < self.size - 1:
             self.check_cell(i + 1, j + 1)
+
+    def check_answer(self):
+        count = 0
+        for i in range(self.size):
+            for j in range(self.size):
+                if self.playingField[i][j].value == 'Bomb':
+                    if self.playingField[i][j].isOpen:
+                        return 'Lose'
+                else:
+                    if self.playingField[i][j].isOpen:
+                        count += 1
+        if count == self.size**2 - self.bombCount:
+            return 'Win'
+        else:
+            return 'In Game'
 
